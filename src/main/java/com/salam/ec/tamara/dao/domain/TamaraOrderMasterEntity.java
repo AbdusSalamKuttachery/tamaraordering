@@ -27,6 +27,9 @@ public class TamaraOrderMasterEntity
 
    @Column(name = "to_user_id")
    private String touserid;
+   //
+   // @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+   // List<TamaraOrderItemEntity> orderItems = new ArrayList<>();
 
    public Long getId()
    {
@@ -77,5 +80,15 @@ public class TamaraOrderMasterEntity
    {
       this.touserid = tousername;
    }
+   //
+   // public List<TamaraOrderItemEntity> getOrderItems()
+   // {
+   // return orderItems;
+   // }
+   //
+   // public void setOrderItems(List<TamaraOrderItemEntity> orderItems)
+   // {
+   // this.orderItems = orderItems;
+   // }
 
 }
