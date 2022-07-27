@@ -32,9 +32,8 @@ public class OrderProcessor
 
       if (validateUser(usernamePass))
       {
-         orderService.createOrder(orderReq);
-         return new ResponseEntity<String>("Order Created", HttpStatus.OK);
-
+         Long orderNumber = orderService.createOrder(orderReq);
+         return new ResponseEntity<String>("Order Number is : " + orderNumber, HttpStatus.OK);
       }
       return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
