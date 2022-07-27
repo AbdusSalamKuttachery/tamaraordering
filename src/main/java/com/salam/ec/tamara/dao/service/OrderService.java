@@ -1,5 +1,7 @@
 package com.salam.ec.tamara.dao.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +9,7 @@ import com.salam.ec.tamara.dao.repo.TamaraOrderMasterRepo;
 import com.salam.ec.tamara.domain.OrderRequest;
 
 @Service
+@Transactional
 public class OrderService
 {
    TamaraOrderMasterRepo tamaraOrderMasterRepo;
