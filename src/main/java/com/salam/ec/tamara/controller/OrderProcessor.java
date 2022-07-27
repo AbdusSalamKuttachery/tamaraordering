@@ -32,11 +32,25 @@ public class OrderProcessor
 
       if (validateUser(usernamePass))
       {
+         if (invalidRequest(orderReq))
+         {
+            return new ResponseEntity<String>("Invalid Data", HttpStatus.BAD_REQUEST);
+         }
+
          Long orderNumber = orderService.createOrder(orderReq);
          return new ResponseEntity<String>("Order Number is : " + orderNumber, HttpStatus.OK);
       }
       return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
+   }
+
+   private boolean invalidRequest(OrderRequest orderReq)
+   {
+      if (orderReq.getOrderTotalAmt() == null)
+      {
+         return true;
+      }
+      return false;
    }
 
    // c2FsYW0gdGFtYXJh
