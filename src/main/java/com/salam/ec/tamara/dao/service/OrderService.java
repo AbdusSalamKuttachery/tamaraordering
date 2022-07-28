@@ -1,5 +1,10 @@
 package com.salam.ec.tamara.dao.service;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,13 +115,42 @@ public class OrderService
          .orElseThrow(() -> new RuntimeException("Template Id not found!"));
    }
 
-   public void updateOrder(OrderRequest newOrder)
+   public String updateOrder(OrderRequest newOrder)
    {
 
       TamaraOrderMasterEntity orderData = newOrder.extractOrder();
       orderData.setId(newOrder.getOrderID());
       orderData.setToorderstatus("Paid");
-      tamaraOrderMasterRepo.save(orderData);
+      if ("Success".equals(callExternalGateway(newOrder)))
+      {
+         tamaraOrderMasterRepo.save(orderData);
+         return "Success";
+      }
+      else
+      {
+         return "Payment Failed";
+      }
    }
 
+   public String callExternalGateway(OrderRequest newOrder)
+   {
+      HttpClient client = HttpClient.newHttpClient();
+      HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://httpbin.org/"))
+         .build();
+
+      try
+      {
+         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+         System.out.println(response.body());
+      }
+      catch (IOException e)
+      {
+         e.printStackTrace();
+      }
+      catch (InterruptedException e)
+      {
+         e.printStackTrace();
+      }
+      return "Success";
+   }
 }

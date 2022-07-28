@@ -41,12 +41,18 @@ public class OrderProcessor
       OrderRequest newOrder = orderService.getOrderNumber(id);
       if ("Pending".equals(newOrder.getOrderStatus()))
       {
-         orderService.updateOrder(newOrder);
-         return new ResponseEntity<String>("Payment Success for Order :" + newOrder.getOrderID(),
-            HttpStatus.OK);
+         if ("Success".equals(orderService.updateOrder(newOrder)))
+         {
+            return new ResponseEntity<String>("Payment Success for Order :" + newOrder.getOrderID(),
+               HttpStatus.OK);
+         }
+         else
+         {
+            return new ResponseEntity<String>("Payment Failed!", HttpStatus.BAD_GATEWAY);
+         }
 
       }
-      return new ResponseEntity<String>("Payment Success for Order :" + newOrder.getOrderID(),
+      return new ResponseEntity<String>("Order already Paid:" + newOrder.getOrderID(),
          HttpStatus.BAD_REQUEST);
    }
 
