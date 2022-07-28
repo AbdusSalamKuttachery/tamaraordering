@@ -27,6 +27,9 @@ public class TamaraOrderMasterEntity
 
    @Column(name = "to_user_id")
    private String touserid;
+
+   @Column(name = "to_order_status")
+   private String toorderstatus;
    //
    // @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
    // List<TamaraOrderItemEntity> orderItems = new ArrayList<>();
@@ -90,5 +93,15 @@ public class TamaraOrderMasterEntity
    // {
    // this.orderItems = orderItems;
    // }
+
+   public String getToorderstatus()
+   {
+      return toorderstatus;
+   }
+
+   public void setToorderstatus(String toorderstatus)
+   {
+      this.toorderstatus = toorderstatus;
+   }
 
 }

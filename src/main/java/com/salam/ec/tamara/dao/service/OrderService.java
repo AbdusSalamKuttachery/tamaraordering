@@ -50,10 +50,12 @@ public class OrderService
          TamaraOrderMasterEntity orderData = orderRequest.extractOrder();
 
          orderNumber = orderKey.getKeyValue();
+
          keyGenerator.save(new TamaraKeyGenerator("Order", orderKey.getKeyValue() + 1L));
 
          List<TamaraOrderItemEntity> itemList = orderRequest.extractItems(orderNumber);
          orderData.setId(orderNumber);
+         orderData.setToorderstatus("Pending");
          tamaraOrderItemsRepo.saveAll(itemList);
          // orderData.setOrderItems(itemList);
          // System.out.println("Items: " + orderData.getOrderItems());
@@ -80,6 +82,7 @@ public class OrderService
       ordResp.setOrderTotalAmt(order.getTototalamt());
       ordResp.setOrderTaxAmt(order.getTotaxamt());
       ordResp.setOrderUserId(order.getTouserid());
+      ordResp.setOrderStatus(order.getToorderstatus());
 
       List<TamaraOrderItemEntity> orderItems = getOrderItemFromDb(id);
       List<OrderItem> respItems = new ArrayList<>();
@@ -105,6 +108,15 @@ public class OrderService
    {
       return tamaraOrderMasterRepo.findById(id)
          .orElseThrow(() -> new RuntimeException("Template Id not found!"));
+   }
+
+   public void updateOrder(OrderRequest newOrder)
+   {
+
+      TamaraOrderMasterEntity orderData = newOrder.extractOrder();
+      orderData.setId(newOrder.getOrderID());
+      orderData.setToorderstatus("Paid");
+      tamaraOrderMasterRepo.save(orderData);
    }
 
 }

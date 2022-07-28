@@ -15,6 +15,7 @@ public class OrderRequest
    BigDecimal orderTotalAmt;
    BigDecimal orderTaxAmt;
    BigDecimal orderDiscountAmt;
+   String orderStatus;
    List<OrderItem> itemsList;
 
    public TamaraOrderMasterEntity extractOrder()
@@ -105,6 +106,16 @@ public class OrderRequest
    public void setOrderID(Long orderID)
    {
       this.orderID = orderID;
+   }
+
+   public String getOrderStatus()
+   {
+      return orderStatus;
+   }
+
+   public void setOrderStatus(String orderStatus)
+   {
+      this.orderStatus = orderStatus;
    }
 
 }

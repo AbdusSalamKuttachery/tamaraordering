@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +31,23 @@ public class OrderProcessor
    @GetMapping(path = "/{id}")
    public @ResponseBody OrderRequest getOrderNumber(@PathVariable(value = "id") final Long id)
    {
-      OrderRequest newQuery = orderService.getOrderNumber(id);
-      return newQuery;
+      OrderRequest newOrder = orderService.getOrderNumber(id);
+      return newOrder;
+   }
+
+   @PatchMapping(path = "/pay/{id}")
+   public ResponseEntity<String> orderPayment(@PathVariable(value = "id") final Long id)
+   {
+      OrderRequest newOrder = orderService.getOrderNumber(id);
+      if ("Pending".equals(newOrder.getOrderStatus()))
+      {
+         orderService.updateOrder(newOrder);
+         return new ResponseEntity<String>("Payment Success for Order :" + newOrder.getOrderID(),
+            HttpStatus.OK);
+
+      }
+      return new ResponseEntity<String>("Payment Success for Order :" + newOrder.getOrderID(),
+         HttpStatus.BAD_REQUEST);
    }
 
    @PostMapping(path = "/save")
